@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Fees Billing</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: #6a11cb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #2575fc;
+        }
+        .hidden { display: none; }
+        .receipt {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #6a11cb;
+        }
+        .receipt h3 {
+            color: #6a11cb;
+            margin-bottom: 10px;
+        }
+        .receipt p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .receipt img {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginPage">
+        <img src="charge.png" alt="College Logo" class="logo" width="150" height="150">
+        <h2 style="color: darkred">SmartFee Master</h2>
+        <br>
+        <h1>Sign into account</h1>
+        <form id="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="loginError" style="color: red; display: none;">Invalid credentials, please try again.</p>
+    </div>
+
+    <div class="container hidden" id="billingPage">
+        <h1>A.V.V.M. Sri Pushpam College</h1>
+        <form id="billForm">
+            <label for="registerNo">Register Number</label>
+            <input type="text" id="registerNo" required>
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" required>
+            <label for="department">Department</label>
+            <select id="department" required>
+                <option value=" B.A. in Economics">B.A. in Economics</option>
+                <option value="B.A. in History">B.A. in History</option>
+                <option value="B.A. in English">B.A. in English</option>
+                <option value="B.A. in Indian Culture">B.A. in Indian Culture</option>
+                <option value="B.A. in Tamil">B.A. in Tamil</option>
+                <option value="B.Sc. in Computer Science">B.Sc. inComputer Science</option>
+                <option value=" B.Sc. in Computer Science">B.Sc. in Computer Science</option>
+                <option value="B.Sc. in Botany">B.Sc. in Botany</option>
+                <option value="B.Sc. in Geography">B.Sc. in Geography</option>
+                <option value="B.Sc. in Zoology">B.Sc. in Zoology</option>
+                <option value="B.Sc. in Chemistry">B.Sc. in Chemistry</option>
+                <option value="B.Sc. in Mathematics">B.Sc. in Mathematics</option>
+                <option value="B.Sc. in Statistics">B.Sc. in Statistics</option>
+                <option value="B.Sc. in Physics">B.Sc. in Physics</option>
+<option value="B.B.A. Bachelor of Business Administration
+">B.B.A. Bachelor of Business Administration</option>
+         <option value="B.C.A. Bachelor of Computer Application "> B.C.A. Bachelor of Computer Application</option>
+         <option value="B.Com.Bachelor of Commerce ">B.Com. Bachelor of Commerce </option>
+         <option value="B.Litt. in Tamil">B.Litt. in Tamil</option>
+         <option value="M.Sc. in Botany">M.Sc. in Botany</option>
+         <option value="M.Sc. in Mathematics">M.Sc. in Mathematics</option>
+         <option value="M.Sc. in Chemistry">M.Sc. in Chemistry</option>
+         <option value="M.Sc. in Mathematics">M.Sc. in Mathematics</option>
+         <option value="M.Sc. in Information Technology">M.Sc. in Information Technology</option>
+         <option value="M.Sc. in Physics">M.Sc. in Physics</option>
+         <option value="M.Sc. in Biotechnology">M.Sc. in Biotechnology</option>
+<option value="M.C.A. Master of Computer Applications">M.C.A. Master ofComputer Applications</option>
+<option value="M.B.A. Master of Business Administration  ">M.B.A. Master of Business Administration
+            </select>
+            <label for="billType">Bill Type</label>
+            <select id="billType">
+                <option value="tuition">Tuition</option>
+                <option value="bus">Bus</option>
+            </select>
+            <label for="billAmount">Amount</label>
+            <input type="number" id="billAmount" required>
+            <label for="billDate">Date</label>
+            <input type="date" id="billDate" required>
+            <button type="submit">Add Bill</button>
+        </form>
+        <div class="receipt hidden" id="receipt"></div>
+        <button id="printBill" class="hidden">Print Bill</button>
+        <div class="history" id="billHistory"></div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const validUsers = { "admin": "1234", "staff": "5678", "student": "abcd" };
+            
+            if (validUsers[username] && validUsers[username] === password) {
+                document.getElementById("loginPage").classList.add("hidden");
+                document.getElementById("billingPage").classList.remove("hidden");
+            } else {
+                document.getElementById("loginError").style.display = "block";
+            }
+        });
+
+        document.getElementById("billForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const registerNo = document.getElementById("registerNo").value;
+            const studentName = document.getElementById("studentName").value;
+            const department = document.getElementById("department").value;
+            const billType = document.getElementById("billType").value;
+            const billAmount = document.getElementById("billAmount").value;
+            const billDate = document.getElementById("billDate").value;
+            
+            const receipt = document.getElementById("receipt");
+            receipt.innerHTML = `<img src='download.jpeg' alt='College Logo'>
+                <h3>A.V.V.M. Sri Pushpam College</h3>
+                <p><strong>Register No:</strong> ${registerNo}</p>
+                <p><strong>Student Name:</strong> ${studentName}</p>
+                <p><strong>Department:</strong> ${department}</p>
+                <p><strong>Bill Type:</strong> ${billType}</p>
+                <p><strong>Amount:</strong> ₹${billAmount}</p>
+                <p><strong>Date:</strong> ${billDate}</p>`;
+            receipt.classList.remove("hidden");
+            document.getElementById("printBill").classList.remove("hidden");
+        });
+    </script>
+</body>
+</html>
